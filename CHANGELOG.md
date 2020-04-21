@@ -1,5 +1,9 @@
 # Piral Changelog
 
+## 0.11.4 (tbd)
+
+* Added typings for `store-event` type to pull from `SharedData` interface (#198)
+
 ## 0.11.3 (tbd)
 
 * Fixed robustness of the declaration generation

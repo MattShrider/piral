@@ -1,4 +1,5 @@
 import { PiralEventMap } from 'piral-base';
+import { SharedData } from './data';
 import { PiralCustomEventMap } from './custom';
 
 export interface PiralStorage {
@@ -28,11 +29,11 @@ export interface Disposable {
   (): void;
 }
 
-export interface PiralStoreDataEvent {
+export interface PiralStoreDataEvent<TKey extends keyof SharedData = any> {
   /**
    * The name of the item that was stored.
    */
-  name: string;
+  name: TKey;
   /**
    * The storage target of the item.
    */
@@ -40,7 +41,7 @@ export interface PiralStoreDataEvent {
   /**
    * The value that was stored.
    */
-  value: any;
+  value: SharedData[TKey];
   /**
    * The owner of the item.
    */
@@ -52,6 +53,10 @@ export interface PiralStoreDataEvent {
 }
 
 declare module 'piral-base/lib/types' {
+  interface EventEmitter {
+    on<K extends keyof PiralEventMap>(type: K, callback: Listener<K extends "store-data" ? PiralStoreDataEvent<K> : PiralEventMap[K]>): EventEmitter;
+  }
+
   interface PiralEventMap extends PiralCustomEventMap {
     'store-data': PiralStoreDataEvent;
   }
